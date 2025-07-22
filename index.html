@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BugDex</title>
+  <style>
+    /* 整体样式 */
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #121212;
+      color: #e0e0e0;
+      display: flex;
+      height: 100vh;
+    }
+    
+    /* 侧边栏 */
+    .sidebar {
+      width: 200px;
+      background-color: #1f1f1f;
+      padding: 20px;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+    }
+    .sidebar h2 {
+      margin-top: 0;
+      font-size: 1.2em;
+      color: #ffffff;
+    }
+    
+    .nav-button {
+      
+      background-color: #2a2a2a;
+      color: #e0e0e0;
+      border: none;
+      padding: 10px;
+      margin: 5px 0;
+      text-align: left;
+      cursor: pointer;
+      border-radius: 4px;
+      font-size: 1em;
+    }
+    .nav-button:hover {
+      background-color: #3a3a3a;
+    }
+
+    /* 主内容区 */
+    .main {
+      flex: 1;
+      padding: 20px;
+      overflow-y: auto;
+      box-sizing: border-box;
+    }
+    .post {
+      background-color: #1f1f1f;
+      border-radius: 5px;
+      padding: 15px;
+      margin-bottom: 15px;
+    }
+    .post .username {
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+    .post .content {
+      line-height: 1.5;
+    }
+  </style>
+</head>
+<body>
+  <!-- 顶部导航栏，右上角登录/注册按钮 -->
+  <div id="navbar" style="position:fixed;top:0;right:0;z-index:1000;padding:20px;">
+    <button id="loginRegisterBtn" class="fancy-btn">登录/注册</button>
+    <button id="langToggleBtn" class="fancy-btn" title="切换语言">🌐中</button><!-- 顶部导航栏，右上角登录/注册按钮 -->
+    <div id="userInfo" style="display:none;align-items:center;gap:10px;">
+      <img id="userAvatar" src="" alt="avatar" style="width:32px;height:32px;border-radius:50%;background:#333;"/>
+      <span id="userNickname"></span>
+      <button id="logoutBtn" class="fancy-btn">退出</button>
+    </div>
+  </div>
+  <div class="sidebar">
+    <div class="logo-area">
+      <span class="logo-icon">🐞</span>
+      <span class="logo-text">BugDex</span>
+    </div>
+    <button class="nav-button" data-section="home" onclick="goTo('home')">首页</button>
+    <button class="nav-button" data-section="user" onclick="goTo('user')">用户中心</button>
+    <button class="nav-button" data-section="weekly" onclick="goTo('weekly')">每周排行</button>
+    <button class="nav-button" data-section="settings" onclick="goTo('settings')">设置</button>
+  </div>
+
+  <div class="main" id="posts-container">
+    <!-- 首页顶部标语横幅 -->
+    <div id="home-banner" class="home-banner">
+      <span>for really?</span>
+    </div>
+  </div>
+
+  <div id="modal" style="display:none"></div>
+
+  <!-- 登录/注册弹窗 -->
+  <div id="authModal" class="modal" style="display:none;">
+    <div class="modal-content auth-modal">
+      <span class="close" id="closeAuthModal"></span>
+      <div class="auth-tabs">
+        <button id="loginTab" class="active">登录</button>
+        <button id="registerTab">注册</button>
+      </div>
+      <form id="loginForm" class="auth-form">
+        <input type="text" id="loginUsername" placeholder="用户名" required />
+        <input type="password" id="loginPassword" placeholder="密码" required />
+        <button type="submit" class="fancy-btn">登录</button>
+      </form>
+      <form id="registerForm" class="auth-form" style="display:none;">
+        <input type="text" id="registerUsername" placeholder="用户名" required />
+        <input type="email" id="registerEmail" placeholder="邮箱" required />
+        <div style="display:flex;gap:8px;align-items:center;">
+          <input type="text" id="registerCode" placeholder="验证码" required style="flex:1;" />
+          <button type="button" id="sendCodeBtn" class="fancy-btn" style="min-width:100px;">获取验证码</button>
+        </div>
+        <input type="password" id="registerPassword" placeholder="密码" required />
+        <input type="password" id="registerConfirm" placeholder="确认密码" required />
+        <button type="submit" class="fancy-btn">注册</button>
+      </form>
+      <div id="authError" class="auth-error"></div>
+    </div>
+  </div>
+
+  <!-- 修改语言 -->
+  <!-- <div class="container">
+    <div class="languageSelection">
+      <a href="#" language='English' class="active">ENG</a>
+      <a href="#" language="Chinese">中文</a>
+    </div>
+  </div> -->
+
+  <!-- 图片放大预览-->
+  <div id="imgZoomModal" style="display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.8);justify-content:center;align-items:center;z-index:3000;">
+    <img id="zoomedImg" style="max-width:90vw;max-height:90vh;border-radius:8px;box-shadow:0 2px 24px rgba(0,0,0,0.5);" />
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
